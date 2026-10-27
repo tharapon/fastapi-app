@@ -1,16 +1,18 @@
 from fastapi import FastAPI
-from fastapi_app.core.config import get_settings
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi_app.api.router import api_router
 
-settings = get_settings()
 
-app = FastAPI(title=settings.app_name, debug=settings.debug)
+app = FastAPI()
 
-# http://localhost:8000/
-@app.get("/")
-def get_hello():
-    return {"Hello": settings.app_name}
+origins = ["*"]
 
-# http://localhost:8000/health
-@app.get("/health")
-def get_health():
-    return {"status": "online", "debug": settings.debug}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(api_router, prefix="/api/v1")
