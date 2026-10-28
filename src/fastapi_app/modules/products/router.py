@@ -36,5 +36,5 @@ def add_product(name: str, price: int, stock: int):
         "id": (max((item["id"] for item in products), default=0)) + 1 ,
         "name": name, "price": price, 
         "stock": stock}
-    products.extend(new_product)
+    products.append(new_product)
     return {"status": "success", "product": new_product}
